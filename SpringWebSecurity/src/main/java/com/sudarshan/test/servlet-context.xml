@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<context:component-scan base-package="com.sudarshan.dao.impl" />
+	
+	<beans:bean id="dbDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:SA" />
+		<beans:property name="username" value="sudarshan" />
+		<beans:property name="password" value="sudarshan" />
+	</beans:bean>
+	
+	<beans:bean id="hibernate4AnnotatedSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <beans:property name="dataSource" ref="dbDataSource" />
+        <beans:property name="annotatedClasses">
+            <beans:list>
+                <beans:value>com.sudarshan.model.User</beans:value>
+                <beans:value>com.sudarshan.model.Role</beans:value>
+                <beans:value>com.sudarshan.model.UserAttempt</beans:value>
+            </beans:list>
+        </beans:property>
+        <beans:property name="hibernateProperties">
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</beans:prop>
+                <beans:prop key="hibernate.current_session_context_class">thread</beans:prop>
+                <beans:prop key="hibernate.show_sql">true</beans:prop>
+                <!-- <beans:prop key="hibernate.hbm2ddl.auto">create</beans:prop> -->
+           </beans:props>
+        </beans:property>
+    </beans:bean>
+    
+    <beans:bean id="userObj" class="com.sudarshan.model.User" scope="prototype"/>
+    <beans:bean id="roleObj" class="com.sudarshan.model.Role" scope="prototype"/>
+    <beans:bean id="userAtmptObj" class="com.sudarshan.model.UserAttempt" scope="prototype"/>
+    <beans:bean id="userDAOObj" class="com.sudarshan.dao.impl.UserDAOImpl" scope="prototype"/>
+    <beans:bean id="roleDAOObj" class="com.sudarshan.dao.impl.RoleDAOImpl" scope="prototype"/>
+    <beans:bean id="userAtmptDAOObj" class="com.sudarshan.dao.impl.UserAttemptDAOImpl" scope="prototype"/>
+    	
+</beans:beans>

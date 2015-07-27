@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<context:component-scan base-package="com.sudarshan.service.impl, com.sudarshan.dao.impl" />
+	
+	<bean id="dbDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/OracleDB"/>
+    </bean>
+	
+	<bean id="hibernate4AnnotatedSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dbDataSource" />
+        <property name="annotatedClasses">
+            <list>
+                <value>com.sudarshan.model.Student</value>
+                <value>com.sudarshan.model.User</value>
+                <value>com.sudarshan.model.Role</value>
+                <value>com.sudarshan.model.UserAttempt</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="myAppUserDtlsSrvc" class="com.sudarshan.service.impl.MyUserDetailsService"/>
+    
+    <bean id="authenticationProviderObj" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    	<property name="userDetailsService" ref="myAppUserDtlsSrvc" />
+    </bean>
+	
+	<bean id="myauthenticationManager" class="org.springframework.security.authentication.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref bean="authenticationProviderObj"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jdbcDaoImplObj" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+		<property name="dataSource" ref="dbDataSource" />
+		<property name="usersByUsernameQuery" value="select USERNAME, PASSWORD, CASE ENABLED WHEN 'Y' THEN '1' ELSE '0' END from MYAPP_USERS where USERNAME = ?"></property>
+		<property name="authoritiesByUsernameQuery" value="select USERNAME, ROLE from MYAPP_USERS_ROLES where USERNAME = ?"/>
+	</bean>
+	
+	<bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+		
+</beans>
