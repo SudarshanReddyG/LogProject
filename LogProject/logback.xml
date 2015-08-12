@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<appender name="FILEOUT" class="ch.qos.logback.core.FileAppender">
+		<file>D:/logback/mylogFile.log</file>
+		<append>TRUE</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FAILFILEOUT" class="ch.qos.logback.core.FileAppender">
+		<file>D:/logback/myfaillogFile.log</file>
+		<append>TRUE</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="FAILFILEOUTTEST" class="ch.qos.logback.core.FileAppender">
+		<file>D:/logback/myfailtestlogFile.log</file>
+		<append>TRUE</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="com.sudarshan.pack1" level="DEBUG" additivity="false">
+		<appender-ref ref="FILEOUT"></appender-ref>
+	</logger>
+	
+	<logger name="com.sudarshan.pack2" level="DEBUG" additivity="false">
+		<appender-ref ref="FAILFILEOUT"></appender-ref>
+	</logger>
+	
+	<logger name="com.sudarshan.pack2.TestClass4" level="DEBUG" additivity="false">
+		<appender-ref ref="FAILFILEOUTTEST"></appender-ref>
+	</logger>
+</configuration>
