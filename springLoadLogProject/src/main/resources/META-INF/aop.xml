@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+	<!-- options="-verbose -debug -showWeaveInfo -Xreweavable" -->
+	<!-- Also include aspects also here -->
+    <weaver options="-verbose -showWeaveInfo -Xreweavable">
+        <!-- only weave classes in our application-specific packages -->
+        <include within="com.sudarshan..*"/>
+        <!-- Specific weaver classes -->
+        <!-- <include within="com.sudarshan.aop.*"/>
+        <include within="com.sudarshan.controller.*"/> -->
+    </weaver>
+
+    <aspects>
+        <aspect name="com.sudarshan.aop.LoggingAspect" />
+        <aspect name="com.sudarshan.aop.LoggingExceptionAspect" />
+    </aspects>
+</aspectj>

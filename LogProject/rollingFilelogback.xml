@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_HOME_DIR" value="D:/logback" />
+	
+	<appender name="FILEOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME_DIR}/active/mylogFile.log</file>
+		<append>TRUE</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME_DIR}/arch/%d{yyyy-MM-dd,aux}/mylogFile%d{yyyy-MM-dd_HH}.%i.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        	    <maxFileSize>1MB</maxFileSize>
+      		</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+	
+	<logger name="com.sudarshan.pack1" level="DEBUG" additivity="false">
+		<appender-ref ref="FILEOUT"></appender-ref>
+	</logger>
+	
+	<logger name="com.sudarshan.pack2" level="DEBUG" additivity="false">
+		<appender-ref ref="FILEOUT"></appender-ref>
+	</logger>
+	
+	<logger name="com.sudarshan.pack2.TestClass4" level="DEBUG" additivity="false">
+		<appender-ref ref="FILEOUT"></appender-ref>
+	</logger>
+</configuration>
